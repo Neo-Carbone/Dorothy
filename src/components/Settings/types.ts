@@ -28,6 +28,7 @@ export interface CLIPaths {
   claude: string;
   codex: string;
   gemini: string;
+  opencode: string;
   gws: string;
   gcloud: string;
   gh: string;
@@ -72,6 +73,8 @@ export interface AppSettings {
   cliPaths: CLIPaths;
   defaultProvider?: string;
   obsidianVaultPaths?: string[];
+  opencodeEnabled: boolean;
+  opencodeDefaultModel: string;
   notificationSounds?: {
     waiting?: string;
     complete?: string;
@@ -86,4 +89,4 @@ export interface AppSettings {
   defaultProjectPath?: string;
 }
 
-export type SettingsSection = 'general' | 'terminal' | 'git' | 'notifications' | 'telegram' | 'slack' | 'jira' | 'socialdata' | 'tasmania' | 'google-workspace' | 'obsidian' | 'permissions' | 'skills' | 'mcp' | 'cli' | 'system';
+export type SettingsSection = 'general' | 'terminal' | 'git' | 'notifications' | 'telegram' | 'slack' | 'jira' | 'socialdata' | 'tasmania' | 'opencode' | 'google-workspace' | 'obsidian' | 'permissions' | 'skills' | 'cli' | 'system';

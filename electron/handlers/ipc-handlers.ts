@@ -203,7 +203,7 @@ function registerAgentHandlers(deps: IpcHandlerDependencies): void {
     name?: string;
     secondaryProjectPath?: string;
     skipPermissions?: boolean;
-    provider?: 'claude' | 'local';
+    provider?: AgentProvider;
     localModel?: string;
     obsidianVaultPaths?: string[];
   }) => {
@@ -273,7 +273,7 @@ function registerAgentHandlers(deps: IpcHandlerDependencies): void {
     const currentSettings = getAppSettings();
     const cliExtraPaths: string[] = [];
     if (currentSettings.cliPaths) {
-      for (const key of ['claude', 'codex', 'gemini', 'gws', 'gh', 'node'] as const) {
+      for (const key of ['claude', 'codex', 'gemini', 'opencode', 'gws', 'gh', 'node'] as const) {
         const val = (currentSettings.cliPaths as unknown as Record<string, string>)[key];
         if (val) cliExtraPaths.push(path.dirname(val));
       }
@@ -456,7 +456,7 @@ function registerAgentHandlers(deps: IpcHandlerDependencies): void {
       const currentSettings = getAppSettings();
       const extraPaths: string[] = [];
       if (currentSettings.cliPaths) {
-        for (const key of ['claude', 'codex', 'gemini', 'gws', 'gh', 'node'] as const) {
+        for (const key of ['claude', 'codex', 'gemini', 'opencode', 'gws', 'gh', 'node'] as const) {
           const val = (currentSettings.cliPaths as unknown as Record<string, string>)[key];
           if (val) extraPaths.push(path.dirname(val));
         }

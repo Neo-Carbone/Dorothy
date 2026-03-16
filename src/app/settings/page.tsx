@@ -18,6 +18,7 @@ import {
   JiraSection,
   SocialDataSection,
   TasmaniaSection,
+  OpenCodeSection,
   GoogleWorkspaceSection,
   PermissionsSection,
   SkillsSection,
@@ -120,6 +121,14 @@ function SettingsPageInner() {
       case 'tasmania':
         return (
           <TasmaniaSection
+            appSettings={appSettings}
+            onSaveAppSettings={handleSaveAppSettings}
+            onUpdateLocalSettings={updateLocalAppSettings}
+          />
+        );
+      case 'opencode':
+        return (
+          <OpenCodeSection
             appSettings={appSettings}
             onSaveAppSettings={handleSaveAppSettings}
             onUpdateLocalSettings={updateLocalAppSettings}
