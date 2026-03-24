@@ -124,6 +124,7 @@ export default function NewChatModal({
   const [useWorktree, setUseWorktree] = useState(false);
   const [branchName, setBranchName] = useState('');
   const [skipPermissions, setSkipPermissions] = useState(true);
+  const [enableAutoMode, setEnableAutoMode] = useState(false);
   const [isOrchestrator, setIsOrchestrator] = useState(false);
 
   const projectPath = selectedProject || customPath;
@@ -167,6 +168,7 @@ export default function NewChatModal({
         setSelectedSecondaryProject(editAgent.secondaryProjectPath || '');
         setCustomSecondaryPath('');
         setSkipPermissions(editAgent.skipPermissions || false);
+        setEnableAutoMode(editAgent.enableAutoMode || false);
         setProvider(editAgent.provider || 'claude');
         setLocalModel(editAgent.localModel || '');
         setSelectedObsidianVaults(editAgent.obsidianVaultPaths || []);
@@ -185,6 +187,7 @@ export default function NewChatModal({
         setSelectedSecondaryProject('');
         setCustomSecondaryPath('');
         setSkipPermissions(false);
+        setEnableAutoMode(false);
         setProvider('claude');
         setLocalModel('');
         setSelectedObsidianVaults([]);
@@ -301,6 +304,7 @@ export default function NewChatModal({
     setIsOrchestrator(enabled);
     if (enabled) {
       setSkipPermissions(true);
+      setEnableAutoMode(false); // auto mode drops Agent allow rules — incompatible with orchestrator
       agentPersonaRef.current = { ...agentPersonaRef.current, character: 'wizard' };
     }
   }, []);
@@ -326,6 +330,7 @@ export default function NewChatModal({
         skills: selectedSkills,
         secondaryProjectPath: secondaryPath || null,
         skipPermissions,
+        enableAutoMode,
         name: finalName,
         character: agentCharacter,
       });
@@ -338,7 +343,7 @@ export default function NewChatModal({
       || (selectedSkills.length > 0 ? `Use the following skills: ${selectedSkills.join(', ')}` : '');
     const worktreeConfig = useWorktree ? { enabled: true, branchName: branchName.trim() } : undefined;
 
-    onSubmit(projectPath, selectedSkills, finalPrompt, model, worktreeConfig, agentCharacter, finalName, secondaryPath, skipPermissions, provider, localModel, selectedObsidianVaults.length > 0 ? selectedObsidianVaults : undefined);
+    onSubmit(projectPath, selectedSkills, finalPrompt, model, worktreeConfig, agentCharacter, finalName, secondaryPath, skipPermissions, enableAutoMode, provider, localModel, selectedObsidianVaults.length > 0 ? selectedObsidianVaults : undefined);
 
     // Reset form
     setStep(1);
@@ -352,11 +357,12 @@ export default function NewChatModal({
     setShowSecondaryProject(false);
     setSelectedSecondaryProject('');
     setSkipPermissions(false);
+    setEnableAutoMode(false);
     setCustomSecondaryPath('');
     setProvider('claude');
     setLocalModel('');
     setSelectedObsidianVaults([]);
-  }, [projectPath, prompt, selectedSkills, useWorktree, branchName, showSecondaryProject, selectedSecondaryProject, customSecondaryPath, model, skipPermissions, provider, localModel, selectedObsidianVaults, onSubmit, isEditMode, editAgent, onUpdate, onClose]);
+  }, [projectPath, prompt, selectedSkills, useWorktree, branchName, showSecondaryProject, selectedSecondaryProject, customSecondaryPath, model, skipPermissions, enableAutoMode, provider, localModel, selectedObsidianVaults, onSubmit, isEditMode, editAgent, onUpdate, onClose]);
 
   // Can proceed from current step?
   const canContinue = step === 1 ? !!projectPath : true;
@@ -458,7 +464,19 @@ export default function NewChatModal({
                 branchName={branchName}
                 onBranchNameChange={setBranchName}
                 skipPermissions={skipPermissions}
-                onToggleSkipPermissions={() => setSkipPermissions(prev => !prev)}
+                onToggleSkipPermissions={() => {
+                  setSkipPermissions(prev => {
+                    if (!prev) setEnableAutoMode(false); // turning on bypass disables auto mode
+                    return !prev;
+                  });
+                }}
+                enableAutoMode={enableAutoMode}
+                onToggleEnableAutoMode={() => {
+                  setEnableAutoMode(prev => {
+                    if (!prev) setSkipPermissions(false); // turning on auto mode disables bypass
+                    return !prev;
+                  });
+                }}
                 isOrchestrator={isOrchestrator}
                 onOrchestratorToggle={handleOrchestratorToggle}
                 projectPath={projectPath}

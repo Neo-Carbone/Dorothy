@@ -9,6 +9,7 @@ export interface InteractiveCommandParams {
   model?: string;
   verbose?: boolean;
   skipPermissions?: boolean;
+  enableAutoMode?: boolean;
   secondaryProjectPath?: string;
   obsidianVaultPaths?: string[];
   mcpConfigPath?: string;

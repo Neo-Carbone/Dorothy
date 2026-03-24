@@ -24,6 +24,7 @@ export interface AgentStatus {
   name?: string;
   pathMissing?: boolean;
   skipPermissions?: boolean;
+  enableAutoMode?: boolean;
   currentSessionId?: string;
   kanbanTaskId?: string;  // For kanban task completion tracking
   statusLine?: string;       // ANSI-stripped last meaningful output line

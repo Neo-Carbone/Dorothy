@@ -50,6 +50,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
       name?: string;
       secondaryProjectPath?: string;
       skipPermissions?: boolean;
+      enableAutoMode?: boolean;
       provider?: string;
       localModel?: string;
       obsidianVaultPaths?: string[];
@@ -59,6 +60,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
       skills?: string[];
       secondaryProjectPath?: string | null;
       skipPermissions?: boolean;
+      enableAutoMode?: boolean;
       name?: string;
       character?: string;
     }) => ipcRenderer.invoke('agent:update', params),

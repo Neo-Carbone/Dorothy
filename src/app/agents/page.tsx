@@ -77,6 +77,7 @@ export default function AgentsPage() {
       secondaryProjectPath: agent.secondaryProjectPath,
       skills: agent.skills,
       skipPermissions: agent.skipPermissions,
+      enableAutoMode: agent.enableAutoMode,
       provider: agent.provider,
       localModel: agent.localModel,
       branchName: agent.branchName,
@@ -95,12 +96,13 @@ export default function AgentsPage() {
     name?: string,
     secondaryProjectPath?: string,
     skipPermissions?: boolean,
+    enableAutoMode?: boolean,
     provider?: AgentProvider,
     localModel?: string,
     obsidianVaultPaths?: string[],
   ) => {
     try {
-      const agent = await createAgent({ projectPath, skills, worktree, character, name, secondaryProjectPath, skipPermissions, provider, localModel, obsidianVaultPaths });
+      const agent = await createAgent({ projectPath, skills, worktree, character, name, secondaryProjectPath, skipPermissions, enableAutoMode, provider, localModel, obsidianVaultPaths });
       if (prompt) {
         const options = { model: provider === 'local' ? undefined : model, provider, localModel };
         await startAgent(agent.id, prompt, options);
@@ -115,6 +117,7 @@ export default function AgentsPage() {
     skills?: string[];
     secondaryProjectPath?: string | null;
     skipPermissions?: boolean;
+    enableAutoMode?: boolean;
     name?: string;
     character?: AgentCharacter;
   }) => {

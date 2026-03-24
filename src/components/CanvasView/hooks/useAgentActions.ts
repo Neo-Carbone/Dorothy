@@ -9,6 +9,7 @@ interface CreateAgentConfig {
   name?: string;
   secondaryProjectPath?: string;
   skipPermissions?: boolean;
+  enableAutoMode?: boolean;
 }
 
 interface UseAgentActionsProps {
@@ -71,10 +72,11 @@ export function useAgentActions({
     character?: AgentCharacter,
     name?: string,
     secondaryProjectPath?: string,
-    skipPermissions?: boolean
+    skipPermissions?: boolean,
+    enableAutoMode?: boolean,
   ) => {
     try {
-      const agent = await createAgent({ projectPath, skills, worktree, character, name, secondaryProjectPath, skipPermissions });
+      const agent = await createAgent({ projectPath, skills, worktree, character, name, secondaryProjectPath, skipPermissions, enableAutoMode });
       setShowCreateAgentModal(false);
       setCreateAgentProjectPath(null);
 

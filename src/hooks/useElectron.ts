@@ -54,6 +54,7 @@ export function useElectronAgents() {
     name?: string;
     secondaryProjectPath?: string;
     skipPermissions?: boolean;
+    enableAutoMode?: boolean;
     provider?: AgentProvider;
     localModel?: string;
     obsidianVaultPaths?: string[];
@@ -72,6 +73,7 @@ export function useElectronAgents() {
     skills?: string[];
     secondaryProjectPath?: string | null;
     skipPermissions?: boolean;
+    enableAutoMode?: boolean;
     name?: string;
     character?: AgentCharacter;
   }) => {

@@ -329,7 +329,8 @@ export default function ProjectsPage() {
     character?: AgentCharacter,
     name?: string,
     secondaryProjectPath?: string,
-    skipPermissions?: boolean
+    skipPermissions?: boolean,
+    enableAutoMode?: boolean,
   ) => {
     try {
       const agent = await createAgent({
@@ -340,6 +341,7 @@ export default function ProjectsPage() {
         name,
         secondaryProjectPath,
         skipPermissions,
+        enableAutoMode,
       });
 
       if (prompt) {

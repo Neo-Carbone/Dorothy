@@ -24,6 +24,7 @@ export interface EditAgentData {
   secondaryProjectPath?: string;
   skills: string[];
   skipPermissions?: boolean;
+  enableAutoMode?: boolean;
   provider?: AgentProvider;
   localModel?: string;
   branchName?: string;
@@ -43,6 +44,7 @@ export interface NewChatModalProps {
     name?: string,
     secondaryProjectPath?: string,
     skipPermissions?: boolean,
+    enableAutoMode?: boolean,
     provider?: AgentProvider,
     localModel?: string,
     obsidianVaultPaths?: string[],
@@ -51,6 +53,7 @@ export interface NewChatModalProps {
     skills?: string[];
     secondaryProjectPath?: string | null;
     skipPermissions?: boolean;
+    enableAutoMode?: boolean;
     name?: string;
     character?: AgentCharacter;
   }) => void;

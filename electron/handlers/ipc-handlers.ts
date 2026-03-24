@@ -217,6 +217,7 @@ function registerAgentHandlers(deps: IpcHandlerDependencies): void {
     name?: string;
     secondaryProjectPath?: string;
     skipPermissions?: boolean;
+    enableAutoMode?: boolean;
     provider?: AgentProvider;
     localModel?: string;
     obsidianVaultPaths?: string[];
@@ -357,6 +358,7 @@ function registerAgentHandlers(deps: IpcHandlerDependencies): void {
       character: config.character || 'robot',
       name: config.name || `Agent ${id.slice(0, 4)}`,
       skipPermissions: config.skipPermissions || false,
+      enableAutoMode: config.enableAutoMode || false,
       provider: config.provider || 'claude',
       localModel: config.localModel,
       obsidianVaultPaths: config.obsidianVaultPaths || [],
@@ -596,6 +598,7 @@ function registerAgentHandlers(deps: IpcHandlerDependencies): void {
       model: (provider !== 'local') ? options?.model : undefined,
       verbose: appSettingsForCommand.verboseModeEnabled,
       skipPermissions: agent.skipPermissions,
+      enableAutoMode: agent.enableAutoMode,
       secondaryProjectPath: agent.secondaryProjectPath,
       obsidianVaultPaths: agent.obsidianVaultPaths,
       mcpConfigPath,
@@ -667,6 +670,7 @@ function registerAgentHandlers(deps: IpcHandlerDependencies): void {
     skills?: string[];
     secondaryProjectPath?: string | null;
     skipPermissions?: boolean;
+    enableAutoMode?: boolean;
     name?: string;
     character?: AgentCharacter;
   }) => {
@@ -690,6 +694,9 @@ function registerAgentHandlers(deps: IpcHandlerDependencies): void {
     }
     if (params.skipPermissions !== undefined) {
       agent.skipPermissions = params.skipPermissions;
+    }
+    if (params.enableAutoMode !== undefined) {
+      agent.enableAutoMode = params.enableAutoMode;
     }
     if (params.name !== undefined) {
       agent.name = params.name;

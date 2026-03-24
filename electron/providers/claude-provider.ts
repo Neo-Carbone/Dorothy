@@ -64,6 +64,11 @@ export class ClaudeProvider implements CLIProvider {
       command += ' --dangerously-skip-permissions';
     }
 
+    // Auto mode
+    if (params.enableAutoMode) {
+      command += ' --enable-auto-mode';
+    }
+
     // Secondary project
     if (params.secondaryProjectPath) {
       const escaped = params.secondaryProjectPath.replace(/'/g, "'\\''");

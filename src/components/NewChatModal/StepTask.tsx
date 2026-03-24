@@ -26,6 +26,8 @@ interface StepTaskProps {
   onBranchNameChange: (name: string) => void;
   skipPermissions: boolean;
   onToggleSkipPermissions: () => void;
+  enableAutoMode: boolean;
+  onToggleEnableAutoMode: () => void;
   isOrchestrator: boolean;
   onOrchestratorToggle: (enabled: boolean) => void;
   // Summary data
@@ -45,6 +47,8 @@ const StepTask = React.memo(function StepTask({
   onBranchNameChange,
   skipPermissions,
   onToggleSkipPermissions,
+  enableAutoMode,
+  onToggleEnableAutoMode,
   isOrchestrator,
   onOrchestratorToggle,
   projectPath,
@@ -166,31 +170,75 @@ const StepTask = React.memo(function StepTask({
                 </div>
 
                 {/* Skip Permissions */}
-                <div className="p-3 rounded-lg border border-amber-500/30 bg-amber-500/5">
-                  <div className="flex items-start gap-3">
-                    <button
-                      onClick={onToggleSkipPermissions}
-                      className={`
-                        mt-0.5 w-5 h-5 rounded border flex items-center justify-center transition-all shrink-0
-                        ${skipPermissions
-                          ? 'bg-amber-500 border-amber-500'
-                          : 'border-amber-500/50 hover:border-amber-500'
-                        }
-                      `}
-                    >
-                      {skipPermissions && <Check className="w-3 h-3 text-white" />}
-                    </button>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2">
-                        <Zap className="w-4 h-4 text-amber-500" />
-                        <span className="font-medium text-sm">Skip Permission Prompts</span>
+                {(() => {
+                  const disabled = enableAutoMode;
+                  return (
+                    <div className={`p-3 rounded-lg border transition-opacity ${disabled ? 'opacity-50 border-border-primary bg-bg-tertiary/20' : 'border-amber-500/30 bg-amber-500/5'}`}>
+                      <div className="flex items-start gap-3">
+                        <button
+                          onClick={disabled ? undefined : onToggleSkipPermissions}
+                          disabled={disabled}
+                          className={`
+                            mt-0.5 w-5 h-5 rounded border flex items-center justify-center transition-all shrink-0
+                            ${disabled ? 'border-border-primary cursor-not-allowed' : skipPermissions
+                              ? 'bg-amber-500 border-amber-500 cursor-pointer'
+                              : 'border-amber-500/50 hover:border-amber-500 cursor-pointer'
+                            }
+                          `}
+                        >
+                          {skipPermissions && !disabled && <Check className="w-3 h-3 text-white" />}
+                        </button>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2">
+                            <Zap className={`w-4 h-4 ${disabled ? 'text-text-muted' : 'text-amber-500'}`} />
+                            <span className="font-medium text-sm">Skip Permission Prompts</span>
+                          </div>
+                          <p className="text-xs text-text-muted mt-1">
+                            {disabled ? 'Incompatible with Auto Mode' : 'Run without asking for permission — the agent will have full autonomy'}
+                          </p>
+                        </div>
                       </div>
-                      <p className="text-xs text-text-muted mt-1">
-                        Run without asking for permission — the agent will have full autonomy
-                      </p>
                     </div>
-                  </div>
-                </div>
+                  );
+                })()}
+
+                {/* Enable Auto Mode */}
+                {(() => {
+                  const disabled = isOrchestrator || skipPermissions;
+                  const reason = isOrchestrator
+                    ? 'Incompatible with Orchestrator mode'
+                    : skipPermissions
+                    ? 'Incompatible with Skip Permission Prompts'
+                    : null;
+                  return (
+                    <div className={`p-3 rounded-lg border transition-opacity ${disabled ? 'opacity-50 border-border-primary bg-bg-tertiary/20' : 'border-accent-green/30 bg-accent-green/5'}`}>
+                      <div className="flex items-start gap-3">
+                        <button
+                          onClick={disabled ? undefined : onToggleEnableAutoMode}
+                          disabled={disabled}
+                          className={`
+                            mt-0.5 w-5 h-5 rounded border flex items-center justify-center transition-all shrink-0
+                            ${disabled ? 'border-border-primary cursor-not-allowed' : enableAutoMode
+                              ? 'bg-accent-green border-accent-green cursor-pointer'
+                              : 'border-accent-green/50 hover:border-accent-green cursor-pointer'
+                            }
+                          `}
+                        >
+                          {enableAutoMode && !disabled && <Check className="w-3 h-3 text-white" />}
+                        </button>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2">
+                            <Sparkles className={`w-4 h-4 ${disabled ? 'text-text-muted' : 'text-accent-green'}`} />
+                            <span className="font-medium text-sm">Enable Auto Mode</span>
+                          </div>
+                          <p className="text-xs text-text-muted mt-1">
+                            {reason ?? 'Start agent with --enable-auto-mode (requires Team plan + Sonnet/Opus 4.6)'}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })()}
 
                 {/* Orchestrator Mode */}
                 <OrchestratorModeToggle

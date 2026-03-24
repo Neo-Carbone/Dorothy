@@ -145,6 +145,7 @@ export interface AgentStatus {
   statusLine?: string;    // ANSI-stripped last meaningful output line
   pathMissing?: boolean; // True if project path no longer exists
   skipPermissions?: boolean; // If true, use --dangerously-skip-permissions flag
+  enableAutoMode?: boolean;  // If true, use --enable-auto-mode flag
   provider?: AgentProvider;   // 'claude' (default) or 'local' (Tasmania)
   localModel?: string;        // Tasmania model name when provider is 'local'
   obsidianVaultPaths?: string[]; // Obsidian vault paths to mount via --add-dir (read-only)
@@ -186,6 +187,7 @@ export interface ElectronAPI {
       name?: string;
       secondaryProjectPath?: string;
       skipPermissions?: boolean;
+      enableAutoMode?: boolean;
       provider?: AgentProvider;
       localModel?: string;
       obsidianVaultPaths?: string[];
@@ -195,6 +197,7 @@ export interface ElectronAPI {
       skills?: string[];
       secondaryProjectPath?: string | null;
       skipPermissions?: boolean;
+      enableAutoMode?: boolean;
       name?: string;
       character?: AgentCharacter;
     }) => Promise<{ success: boolean; error?: string; agent?: AgentStatus }>;
